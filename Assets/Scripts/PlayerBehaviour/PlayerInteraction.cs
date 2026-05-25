@@ -130,21 +130,16 @@ public class PlayerInteraction : MonoBehaviour
             if (hit.collider != null && hit.collider.CompareTag("Agent"))
             {
                 GameObject agent = hit.collider.gameObject;
-                /*
-                PikminBehavior pikminBehavior = pikmin.GetComponent<PikminBehavior>();
-                if (pikminBehavior != null)
+                AgentStates _state = agent.GetComponent<AgentStates>();
+                if (_state != null)
                 {
-                    if (pikminBehavior.task != PikminBehavior.Task.FollowingTask && pikminBehavior.task != PikminBehavior.Task.Thrown)
+                    if (_state.task != AgentStates.Task.FollowingTask)
                     {
-                        if (pikminBehavior.task == PikminBehavior.Task.CarryingTreasure)
-                        {
-                            pikminBehavior.StopLiftingTreasure();
-                        }
-                        pikminBehavior.task = PikminBehavior.Task.FollowingTask;
-                        pikminBehavior.followingTask = PikminBehavior.FollowingTask.GoingTowardsPlayer; 
+                        _state.task = AgentStates.Task.FollowingTask;
+                        _state.followingTask = AgentStates.FollowingTask.GoingTowardsPlayer; 
                     }
                     
-                }*/
+                }
             }
         }
     }
@@ -155,12 +150,12 @@ public class PlayerInteraction : MonoBehaviour
         
         foreach (GameObject agent in allAgents)
         {
-            /*
-            PikminBehavior pikminBehavior = pikmin.GetComponent<PikminBehavior>();
-            if (pikminBehavior != null && pikminBehavior.task == PikminBehavior.Task.FollowingTask)
+            
+            AgentStates _state = agent.GetComponent<AgentStates>();
+            if (_state != null && _state.task == AgentStates.Task.FollowingTask)
             {
-                pikminBehavior.task = PikminBehavior.Task.Idle;
-            }*/
+                _state.task = AgentStates.Task.Idle;
+            }
         }
     }
 }
