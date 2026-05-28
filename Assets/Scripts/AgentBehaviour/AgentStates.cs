@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System;
+using Unity.Behavior;
 
 public class AgentStates : MonoBehaviour
 {
+    public BehaviorGraphAgent agent; 
     public enum Task { Idle, FollowingTask, IndependentTask}
     public Task task = Task.Idle;
 
-
-
-    public enum IndependentTask { Spinning, Jumping }
-    public IndependentTask independentTask;
-
-
-    private Follow _follow;
+    public BehaviorGraph followGraph;
+    public BehaviorGraph idleGraph;
+    public BehaviorGraph taskGraph;
 
     void Start()
     {
-        _follow = GetComponent<Follow>();
+        agent = GetComponent<BehaviorGraphAgent>();
     }
 
 
@@ -32,39 +30,17 @@ public class AgentStates : MonoBehaviour
                 //no task
                 break;
             case Task.FollowingTask:
-                FollowPlayer();
+                AssignGraph(followGraph);
                 break;
             case Task.IndependentTask:
-                DoTask();
                 //task check
                 break;
         }
     }
 
-    private void FollowPlayer()
+    private void AssignGraph(BehaviorGraph graph)
     {
-        switch (followingTask)
-        {
-            case FollowingTask.Waiting:
-                _follow.Wait();
-                break;
-            case FollowingTask.GoingTowardsPlayer:
-                _follow.GoTowardsPlayer();
-                break;
-        }
-    }
-
-    private void DoTask()
-    {
-        switch (independentTask)
-        {
-            case IndependentTask.Spinning:
-                //Wait();
-                break;
-            case IndependentTask.Jumping:
-                //GoTowardsPlayer();
-                break;
-        }
+        agent.Graph = graph;
     }
 
 

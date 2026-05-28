@@ -136,7 +136,7 @@ public class PlayerInteraction : MonoBehaviour
                     if (_state.task != AgentStates.Task.FollowingTask)
                     {
                         _state.task = AgentStates.Task.FollowingTask;
-                        _state.followingTask = AgentStates.FollowingTask.GoingTowardsPlayer; 
+                        //_state.followingTask = AgentStates.FollowingTask.GoingTowardsPlayer; 
                     }
                     
                 }

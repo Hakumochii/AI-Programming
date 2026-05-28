@@ -32,7 +32,7 @@ MonoBehaviour:
   - rid: 6883164416981860591
   - rid: 6883164416981860618
   - rid: 6883164438100705358
-  m_VersionTimestamp: 639155775662417180
+  m_VersionTimestamp: 639155951249113304
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: 8548692843430407321}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_Nodes:
   - rid: 6883164416981860592
   - rid: 6883164438100705346
-  m_VersionTimestamp: 639155775923952090
+  m_VersionTimestamp: 639155951230658837
   m_SerializedVersion: 2
   m_DebugInfo: {fileID: -3585850149821551204}
   m_RuntimeGraph: {fileID: 8513152306522264251}
@@ -142,7 +142,7 @@ MonoBehaviour:
     - rid: 6883164416981860592
       type: {class: StartNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
-        Position: {x: 211.19998, y: -165.33337}
+        Position: {x: 34.13336, y: -201.06685}
         ID:
           m_Value0: 10593756648644589576
           m_Value1: 14388392888309202247
@@ -170,7 +170,7 @@ MonoBehaviour:
     - rid: 6883164438100705346
       type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
-        Position: {x: -149.26672, y: 26.73328}
+        Position: {x: 32.066643, y: -61.266743}
         ID:
           m_Value0: 2085329744489993211
           m_Value1: 5316361864917650549
@@ -295,8 +295,8 @@ MonoBehaviour:
           rid: 6883164416981860595
         BlackboardGroupReferences: []
         Root:
-          rid: 6883164438100705371
-        m_VersionTimestamp: 639155775923952090
+          rid: 6883164442499481671
+        m_VersionTimestamp: 639155951230658837
     - rid: 6883164416981860595
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -307,34 +307,10 @@ MonoBehaviour:
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 6883164438100705368
-        - rid: 6883164438100705369
-        - rid: 6883164438100705370
-    - rid: 6883164438100705368
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 0}
-    - rid: 6883164438100705369
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 14611859374861735483
-          m_Value1: 11180751332021456816
-        Name: player
-        m_Value: {fileID: 0}
-    - rid: 6883164438100705370
-      type: {class: 'BlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 3381870214631853727
-          m_Value1: 2581410309177133728
-        Name: New NavMeshAgent
-        m_Value: {fileID: 0}
-    - rid: 6883164438100705371
+        - rid: 6883164442499481672
+        - rid: 6883164442499481673
+        - rid: 6883164442499481674
+    - rid: 6883164442499481671
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -348,6 +324,30 @@ MonoBehaviour:
           rid: -2
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
+    - rid: 6883164442499481672
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 0}
+    - rid: 6883164442499481673
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 14611859374861735483
+          m_Value1: 11180751332021456816
+        Name: player
+        m_Value: {fileID: 0}
+    - rid: 6883164442499481674
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 3381870214631853727
+          m_Value1: 2581410309177133728
+        Name: New NavMeshAgent
+        m_Value: {fileID: 0}
 --- !u!114 &8548692843430407321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,7 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: FollowBehaviour Blackboard
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.RuntimeBlackboardAsset
-  VersionTimestamp: 639155775662417180
+  VersionTimestamp: 639155951229420760
   AssetID:
     m_Value0: 3781962221765388097
     m_Value1: 15531222483167132986
