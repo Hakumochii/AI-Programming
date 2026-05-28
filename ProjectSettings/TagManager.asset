@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Agent
   - PlayerRange
+  - PlayerSpace
   layers:
   - Default
   - TransparentFX

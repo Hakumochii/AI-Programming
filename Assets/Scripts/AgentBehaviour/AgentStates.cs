@@ -9,8 +9,7 @@ public class AgentStates : MonoBehaviour
     public enum Task { Idle, FollowingTask, IndependentTask}
     public Task task = Task.Idle;
 
-    public enum FollowingTask { GoingTowardsPlayer, Waiting }
-    public FollowingTask followingTask;
+
 
     public enum IndependentTask { Spinning, Jumping }
     public IndependentTask independentTask;
@@ -20,7 +19,7 @@ public class AgentStates : MonoBehaviour
 
     void Start()
     {
-        _follow = FindFirstObjectByType<Follow>();
+        _follow = GetComponent<Follow>();
     }
 
 
@@ -67,9 +66,6 @@ public class AgentStates : MonoBehaviour
                 break;
         }
     }
-
-
-
 
 
 }
