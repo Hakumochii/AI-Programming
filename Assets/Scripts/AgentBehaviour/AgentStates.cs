@@ -7,17 +7,20 @@ using Unity.Behavior;
 
 public class AgentStates : MonoBehaviour
 {
-    public BehaviorGraphAgent agent; 
     public enum Task { Idle, FollowingTask, IndependentTask}
     public Task task = Task.Idle;
 
-    public BehaviorGraph followGraph;
-    public BehaviorGraph idleGraph;
-    public BehaviorGraph taskGraph;
+    public GameObject followGraph;
+    public GameObject idleGraph;
+    public GameObject taskGraph;
 
-    void Start()
+    private List<GameObject> _graphs = new List<GameObject>();
+
+    void Awake()
     {
-        agent = GetComponent<BehaviorGraphAgent>();
+        _graphs.Add(followGraph);
+        _graphs.Add(idleGraph);
+        _graphs.Add(taskGraph);
     }
 
 
@@ -30,7 +33,7 @@ public class AgentStates : MonoBehaviour
                 //no task
                 break;
             case Task.FollowingTask:
-                AssignGraph(followGraph);
+                SetGraphActive(followGraph);
                 break;
             case Task.IndependentTask:
                 //task check
@@ -38,9 +41,21 @@ public class AgentStates : MonoBehaviour
         }
     }
 
-    private void AssignGraph(BehaviorGraph graph)
+    private void SetGraphActive(GameObject graph)
     {
-        agent.Graph = graph;
+        foreach (var g in _graphs)
+            g.SetActive(g == graph);
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        Debug.Log("trigger collision detected");
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            task = Task.FollowingTask;
+            Debug.Log("change to following");
+        }
+  
     }
 
 

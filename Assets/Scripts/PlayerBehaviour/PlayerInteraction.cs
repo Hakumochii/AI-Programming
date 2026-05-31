@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Behavior;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -25,10 +26,12 @@ public class PlayerInteraction : MonoBehaviour
     private bool callingAgents = false; 
     private Quaternion cursorRotation = Quaternion.Euler(90f, 0f, 0f);
     private float cursorOffsetFromGround = 0.5f;
-    private Vector2 _lastPointerPosition;
 
     //corutines
     private Coroutine callAgentsCoroutine;
+
+    //point
+    [SerializeField] private EventChannelBase pointEventChannel;
 
     private void Start()
     {
@@ -41,6 +44,27 @@ public class PlayerInteraction : MonoBehaviour
         cursorCircleSmall.SetActive(false);
         cursorCircleBig.SetActive(false);
     }
+
+    public void OnPoint(InputAction.CallbackContext context)
+    {
+        if (pointEventChannel == null) return;
+        
+        if (context.performed)
+            pointEventChannel.SendEventMessage(
+                new BlackboardVariable[]
+                {
+                    new BlackboardVariable<bool> { Value = true }
+                }
+            );
+        else if (context.canceled)
+            pointEventChannel.SendEventMessage(
+                new BlackboardVariable[]
+                {
+                    new BlackboardVariable<bool> { Value = false }
+                }
+            );
+    }
+    
 
     public void OnCall(InputAction.CallbackContext context)
     {
