@@ -45,7 +45,7 @@ public partial class Flocking : Action
 
     private Vector3  _noiseOffset;
     private Coroutine _noiseCoroutine;
-    private float arrivalDistance = 2f;
+    private float arrivalDistance = 3f;
     private Vector2 pointerPosition;
 
     protected override Status OnStart()

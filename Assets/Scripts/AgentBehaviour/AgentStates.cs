@@ -8,7 +8,17 @@ using Unity.Behavior;
 public class AgentStates : MonoBehaviour
 {
     public enum Task { Idle, FollowingTask, IndependentTask}
-    public Task task = Task.Idle;
+    private Task _task = Task.Idle;
+    public Task task
+    {
+        get => _task;
+        set
+        {
+            if (_task == value) return;
+            _task = value;
+            OnTaskChanged(_task);
+        }
+    }
 
     public GameObject followGraph;
     public GameObject idleGraph;
@@ -23,20 +33,18 @@ public class AgentStates : MonoBehaviour
         _graphs.Add(taskGraph);
     }
 
-
-    private void Update()
+    private void OnTaskChanged(Task newTask)
     {
-        //switching tasks based on differnet factors
-        switch (task)
+        switch (newTask)
         {
             case Task.Idle:
-                //no task
+                SetGraphActive(idleGraph);
                 break;
             case Task.FollowingTask:
                 SetGraphActive(followGraph);
                 break;
             case Task.IndependentTask:
-                //task check
+                SetGraphActive(taskGraph);
                 break;
         }
     }
@@ -45,18 +53,22 @@ public class AgentStates : MonoBehaviour
     {
         foreach (var g in _graphs)
             g.SetActive(g == graph);
+        Debug.Log("change to: " + graph);
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("trigger collision detected");
         if (collision.gameObject.CompareTag("Player"))
         {
             task = Task.FollowingTask;
-            Debug.Log("change to following");
+        }
+
+        if (collision.gameObject.CompareTag("Task"))
+        {
+            Debug.Log("Task entered");
+            task = Task.IndependentTask;
         }
   
     }
-
 
 }

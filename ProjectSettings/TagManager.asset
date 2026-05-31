@@ -5,8 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Agent
-  - PlayerRange
-  - PlayerSpace
+  - Task
   layers:
   - Default
   - TransparentFX

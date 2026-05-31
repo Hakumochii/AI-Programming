@@ -153,6 +153,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (hit.collider != null && hit.collider.CompareTag("Agent"))
             {
+                Debug.Log("Agent was hit");
                 GameObject agent = hit.collider.gameObject;
                 AgentStates _state = agent.GetComponent<AgentStates>();
                 if (_state != null)
@@ -160,7 +161,6 @@ public class PlayerInteraction : MonoBehaviour
                     if (_state.task != AgentStates.Task.FollowingTask)
                     {
                         _state.task = AgentStates.Task.FollowingTask;
-                        //_state.followingTask = AgentStates.FollowingTask.GoingTowardsPlayer; 
                     }
                     
                 }

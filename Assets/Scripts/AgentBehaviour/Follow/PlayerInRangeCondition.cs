@@ -8,7 +8,7 @@ public partial class PlayerInRangeCondition : Condition
 {
     public BlackboardVariable<Transform> player;
     private BehaviorGraphAgent _agent;
-    private float arrivalDistance = 2f;
+    private float arrivalDistance = 3f;
 
     public override void OnStart()
     {
