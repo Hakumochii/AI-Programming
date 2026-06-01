@@ -23,6 +23,9 @@ public class PlayerMovement : MonoBehaviour
     private float _verticalVelocity;
     private float RotationSmoothTime = 0.12f; 
 
+    //animation
+    public Animator _animator;
+
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
@@ -59,6 +62,8 @@ public class PlayerMovement : MonoBehaviour
     {
         // Normalize input direction for consistent movement speed
         Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
+
+        _animator.SetBool("Running", move != Vector2.zero);
 
         // Apply rotation only if there's input
         if (move != Vector2.zero)

@@ -13,17 +13,28 @@ MonoBehaviour:
   m_Name: IdleGraph Blackboard
   m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorBlackboardAuthoringAsset
   AssetID:
-    m_Value0: 0
-    m_Value1: 0
+    m_Value0: 10707813511278397036
+    m_Value1: 11943905527722539273
   m_Variables:
   - rid: 6883164503701455468
-  m_VersionTimestamp: 639158388720305676
+  - rid: 2790938776118231781
+  m_VersionTimestamp: 639159245277261869
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -3301317073985455235}
   references:
     version: 2
     RefIds:
+    - rid: 2790938776118231781
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 6772368301144146442
+          m_Value1: 1986555988323746382
+        Name: NavAgent
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
     - rid: 6883164503701455468
       type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -46,17 +57,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: IdleGraph Blackboard
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.RuntimeBlackboardAsset
-  VersionTimestamp: 639158388720305676
+  VersionTimestamp: 639159245277261869
   AssetID:
-    m_Value0: 0
-    m_Value1: 0
+    m_Value0: 10707813511278397036
+    m_Value1: 11943905527722539273
   m_Blackboard:
     m_Variables:
     - rid: 6883164503701455469
+    - rid: 2790938776118231782
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
     RefIds:
+    - rid: 2790938776118231782
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6772368301144146442
+          m_Value1: 1986555988323746382
+        Name: NavAgent
+        m_Value: {fileID: 0}
     - rid: 6883164503701455469
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -81,7 +101,8 @@ MonoBehaviour:
   m_Description: 
   m_Nodes:
   - rid: 6883164503701455470
-  m_VersionTimestamp: 639158388720427947
+  - rid: 2790938776118231772
+  m_VersionTimestamp: 639159245300426718
   m_SerializedVersion: 2
   m_DebugInfo: {fileID: 7433392794787486213}
   m_RuntimeGraph: {fileID: 4829827778518571511}
@@ -103,6 +124,21 @@ MonoBehaviour:
     Variables: []
     NamedChildren: []
     IsPlaceholder: 0
+  - Name: Idle
+    Story: 'Stand still till further instructions using [NavAgent]'
+    RuntimeTypeString: IdleAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 2773602791030272387
+      m_Value1: 9327181249244472489
+    Variables:
+    - Name: navAgent
+      Type:
+        m_SerializableType: UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
+    NamedChildren: []
+    IsPlaceholder: 0
   m_Blackboards: []
   m_MainBlackboardAuthoringAsset: {fileID: -7412284818328685064}
   m_CommandBuffer:
@@ -114,10 +150,77 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 2790938776118231772
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -185.33337, y: -63.46674}
+        ID:
+          m_Value0: 5143803136636200295
+          m_Value1: 9454096218064496743
+        Parents: []
+        PortModels:
+        - rid: 2790938776118231773
+        - rid: 2790938776118231774
+        NodeType:
+          m_SerializableType: IdleAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 2773602791030272387
+          m_Value1: 9327181249244472489
+        m_FieldValues:
+        - rid: 2790938776118231775
+    - rid: 2790938776118231773
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 2790938776118231772
+        m_Connections:
+        - rid: 6883164503701455471
+    - rid: 2790938776118231774
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 2790938776118231772
+        m_Connections: []
+    - rid: 2790938776118231775
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: navAgent
+        Type:
+          m_SerializableType: UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 2790938776118231776
+        LinkedVariable:
+          rid: 2790938776118231789
+    - rid: 2790938776118231776
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 2790938776118231789
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 6772368301144146442
+          m_Value1: 1986555988323746382
+        Name: NavAgent
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
     - rid: 6883164503701455470
       type: {class: StartNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
-        Position: {x: 0, y: 0}
+        Position: {x: -187.20003, y: -211.20016}
         ID:
           m_Value0: 9652526079566620793
           m_Value1: 16161220084524628559
@@ -141,7 +244,8 @@ MonoBehaviour:
         m_IsFloating: 0
         m_NodeModel:
           rid: 6883164503701455470
-        m_Connections: []
+        m_Connections:
+        - rid: 2790938776118231773
 --- !u!114 &4829827778518571511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +267,48 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 2790938776118231791
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 0}
+    - rid: 2790938776118231792
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6772368301144146442
+          m_Value1: 1986555988323746382
+        Name: NavAgent
+        m_Value: {fileID: 0}
+    - rid: 2790938776118231793
+      type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 9652526079566620793
+          m_Value1: 16161220084524628559
+        Graph:
+          rid: 6883164503701455472
+        m_Parent:
+          rid: -2
+        m_Child:
+          rid: 2790938776118231794
+        Repeat: 1
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 2790938776118231794
+      type: {class: IdleAction, ns: , asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 5143803136636200295
+          m_Value1: 9454096218064496743
+        Graph:
+          rid: 6883164503701455472
+        m_Parent:
+          rid: 2790938776118231793
+        navAgent:
+          rid: 2790938776118231792
     - rid: 6883164503701455472
       type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -174,41 +320,20 @@ MonoBehaviour:
           rid: 6883164503701455473
         BlackboardGroupReferences: []
         Root:
-          rid: 6883164503701455474
-        m_VersionTimestamp: 639158388720427947
+          rid: 2790938776118231793
+        m_VersionTimestamp: 639159245300426718
     - rid: 6883164503701455473
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Blackboard:
           rid: 6883164503701455475
         m_Source: {fileID: -3301317073985455235}
-    - rid: 6883164503701455474
-      type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        ID:
-          m_Value0: 9652526079566620793
-          m_Value1: 16161220084524628559
-        Graph:
-          rid: 6883164503701455472
-        m_Parent:
-          rid: -2
-        m_Child:
-          rid: -2
-        Repeat: 1
-        AllowMultipleRepeatsPerTick: 0
     - rid: 6883164503701455475
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 6883164503701455476
-    - rid: 6883164503701455476
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 0}
+        - rid: 2790938776118231791
+        - rid: 2790938776118231792
 --- !u!114 &7433392794787486213
 MonoBehaviour:
   m_ObjectHideFlags: 0

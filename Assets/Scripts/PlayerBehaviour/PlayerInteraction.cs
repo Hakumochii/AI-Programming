@@ -33,7 +33,9 @@ public class PlayerInteraction : MonoBehaviour
     //corutines
     private Coroutine callAgentsCoroutine;
 
-
+    //animation
+    public Animator _animator;
+    
     private void Start()
     {
         Cursor.visible = false;
@@ -48,31 +50,59 @@ public class PlayerInteraction : MonoBehaviour
         arrowCursor.SetActive(false);
     }
 
-    // Find all agents and set their blackboard variable
     public void OnDirect(InputAction.CallbackContext context)
     {
-        bool value = context.performed;
-        directing = value;
-        
-        GameObject[] agents = GameObject.FindGameObjectsWithTag("Agent");
-        foreach (GameObject agent in agents)
+        if (context.performed)
         {
-            var behaviorAgent = agent.GetComponentInChildren<BehaviorGraphAgent>();
-            if (behaviorAgent != null)
-                behaviorAgent.BlackboardReference.SetVariableValue("IsPointing", value);
-        }
-    }
-    
-
-    public void OnCall(InputAction.CallbackContext context)
-    {
-        if (context.performed && callAgentsCoroutine == null)
-        {
-            callingAgents = true;
-            callAgentsCoroutine = StartCoroutine(CallAgentsContinuously());
+            directing = true;
+            _animator.SetBool("Pointing", true);
         }
         else if (context.canceled)
         {
+            directing = false;
+            _animator.SetBool("Pointing", false);
+        }
+
+        GameObject[] agents = GameObject.FindGameObjectsWithTag("Agent");
+        foreach (GameObject agent in agents)
+        {
+            var states = agent.GetComponent<AgentStates>();
+            if (states == null) continue;
+
+            // Only restart if the agent is currently in follow mode
+            if (states.task == AgentStates.Task.FollowingTask)
+            {
+                var behaviorAgent = states.followGraph.GetComponent<BehaviorGraphAgent>();
+                if (behaviorAgent != null)
+                {
+                    behaviorAgent.BlackboardReference.SetVariableValue("IsPointing", directing);
+                    behaviorAgent.Restart();
+                }
+            }
+            else
+            {
+                // Just update the blackboard value for when they eventually switch to follow
+                var behaviorAgent = states.followGraph.GetComponent<BehaviorGraphAgent>();
+                if (behaviorAgent != null)
+                    behaviorAgent.BlackboardReference.SetVariableValue("IsPointing", directing);
+            }
+        }
+    }
+
+    public void OnCall(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {    
+            _animator.SetBool("Yelling", true);
+            if (callAgentsCoroutine == null)
+            {
+                callingAgents = true;
+                callAgentsCoroutine = StartCoroutine(CallAgentsContinuously());
+            }
+        }
+        else if (context.canceled)
+        {
+            _animator.SetBool("Yelling", false);
             callingAgents = false;
             if (callAgentsCoroutine != null)
             {

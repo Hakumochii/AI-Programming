@@ -40,15 +40,14 @@ public class AgentStates : MonoBehaviour
 
     IEnumerator Start()
     {
-        yield return null; // wait one frame
+        yield return null; 
         
         var agent = taskGraph.GetComponent<BehaviorGraphAgent>();
         agent.BlackboardReference.SetVariableValue("AgentBody", agentBody);
         
-        // Verify it was set
         agent.BlackboardReference.GetVariableValue("AgentBody", out Rigidbody rb);
         
-        yield return null; // wait another frame before activating
+        yield return null;
         
         SetGraphActive(idleGraph);
     }
@@ -76,7 +75,6 @@ public class AgentStates : MonoBehaviour
             if (g == graph)
             {
                 g.SetActive(true);
-                // Restart the graph so all nodes reset cleanly
                 g.GetComponent<BehaviorGraphAgent>().Restart();
             }
             else
