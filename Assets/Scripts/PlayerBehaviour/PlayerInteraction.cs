@@ -12,7 +12,9 @@ public class PlayerInteraction : MonoBehaviour
     //reference to cursors
     [SerializeField] private GameObject cursorCircleSmallPrefab;
     [SerializeField] private GameObject cursorCircleBigPrefab;
+    [SerializeField] private GameObject arrowCursorPrefab;
     private GameObject cursorCircleSmall;
+    private GameObject arrowCursor;
     private GameObject cursorCircleBig;
     private GameObject currentCursorCircleBig; 
 
@@ -24,14 +26,13 @@ public class PlayerInteraction : MonoBehaviour
 
     //vaiables used for states or calculations
     private bool callingAgents = false; 
+    private bool directing = false;
     private Quaternion cursorRotation = Quaternion.Euler(90f, 0f, 0f);
     private float cursorOffsetFromGround = 0.5f;
 
     //corutines
     private Coroutine callAgentsCoroutine;
 
-    //point
-    [SerializeField] private EventChannelBase pointEventChannel;
 
     private void Start()
     {
@@ -40,29 +41,26 @@ public class PlayerInteraction : MonoBehaviour
 
         cursorCircleSmall = Instantiate(cursorCircleSmallPrefab, Vector3.zero, cursorRotation);
         cursorCircleBig = Instantiate(cursorCircleBigPrefab, Vector3.zero, cursorRotation);
+        arrowCursor = Instantiate(arrowCursorPrefab, Vector3.zero, cursorRotation);
         
         cursorCircleSmall.SetActive(false);
         cursorCircleBig.SetActive(false);
+        arrowCursor.SetActive(false);
     }
 
-    public void OnPoint(InputAction.CallbackContext context)
+    // Find all agents and set their blackboard variable
+    public void OnDirect(InputAction.CallbackContext context)
     {
-        if (pointEventChannel == null) return;
+        bool value = context.performed;
+        directing = value;
         
-        if (context.performed)
-            pointEventChannel.SendEventMessage(
-                new BlackboardVariable[]
-                {
-                    new BlackboardVariable<bool> { Value = true }
-                }
-            );
-        else if (context.canceled)
-            pointEventChannel.SendEventMessage(
-                new BlackboardVariable[]
-                {
-                    new BlackboardVariable<bool> { Value = false }
-                }
-            );
+        GameObject[] agents = GameObject.FindGameObjectsWithTag("Agent");
+        foreach (GameObject agent in agents)
+        {
+            var behaviorAgent = agent.GetComponentInChildren<BehaviorGraphAgent>();
+            if (behaviorAgent != null)
+                behaviorAgent.BlackboardReference.SetVariableValue("IsPointing", value);
+        }
     }
     
 
@@ -111,6 +109,7 @@ public class PlayerInteraction : MonoBehaviour
             // Raycast missed — hide cursors so you can see when this happens
             cursorCircleSmall.SetActive(false);
             cursorCircleBig.SetActive(false);
+            arrowCursor.SetActive(false);
         }
     }
 
@@ -121,12 +120,21 @@ public class PlayerInteraction : MonoBehaviour
         if (callingAgents)
         {
             cursorCircleSmall.SetActive(false);
+            arrowCursor.SetActive(false);
             cursorCircleBig.SetActive(true);
             cursorCircleBig.transform.position = pos;
+        }
+        else if (directing)
+        {
+            cursorCircleBig.SetActive(false);
+            cursorCircleSmall.SetActive(false);
+            arrowCursor.SetActive(true);
+            arrowCursor.transform.position = pos;
         }
         else
         {
             cursorCircleBig.SetActive(false);
+            arrowCursor.SetActive(false);
             cursorCircleSmall.SetActive(true);
             cursorCircleSmall.transform.position = pos;
         }

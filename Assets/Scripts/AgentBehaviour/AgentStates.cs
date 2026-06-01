@@ -26,11 +26,31 @@ public class AgentStates : MonoBehaviour
 
     private List<GameObject> _graphs = new List<GameObject>();
 
+    public Rigidbody agentBody;  // ← drag it here in the inspector
+
     void Awake()
     {
         _graphs.Add(followGraph);
         _graphs.Add(idleGraph);
         _graphs.Add(taskGraph);
+
+        foreach (var g in _graphs)
+            g.SetActive(true);
+    }
+
+    IEnumerator Start()
+    {
+        yield return null; // wait one frame
+        
+        var agent = taskGraph.GetComponent<BehaviorGraphAgent>();
+        agent.BlackboardReference.SetVariableValue("AgentBody", agentBody);
+        
+        // Verify it was set
+        agent.BlackboardReference.GetVariableValue("AgentBody", out Rigidbody rb);
+        
+        yield return null; // wait another frame before activating
+        
+        SetGraphActive(idleGraph);
     }
 
     private void OnTaskChanged(Task newTask)
@@ -52,9 +72,19 @@ public class AgentStates : MonoBehaviour
     private void SetGraphActive(GameObject graph)
     {
         foreach (var g in _graphs)
-            g.SetActive(g == graph);
-        Debug.Log("change to: " + graph);
-    }
+        {
+            if (g == graph)
+            {
+                g.SetActive(true);
+                // Restart the graph so all nodes reset cleanly
+                g.GetComponent<BehaviorGraphAgent>().Restart();
+            }
+            else
+            {
+                g.SetActive(false);
+            }
+        }
+}
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -65,10 +95,11 @@ public class AgentStates : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Task"))
         {
-            Debug.Log("Task entered");
             task = Task.IndependentTask;
         }
   
     }
+
+    
 
 }
