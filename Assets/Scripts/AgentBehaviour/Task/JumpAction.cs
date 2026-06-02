@@ -17,7 +17,7 @@ public partial class JumpAction : Action
     private Rigidbody _rb;
 
     private float _jumpTime;
-    private float _jumpDelay = 0.2f;  // wait before checking grounded
+    private float _jumpDelay = 0.2f;  
 
     protected override Status OnStart()
     {
@@ -27,7 +27,7 @@ public partial class JumpAction : Action
             return Status.Failure;
         }
 
-        _rb = agentBody.Value.GetComponent<Rigidbody>();  // ← get Rigidbody from GameObject
+        _rb = agentBody.Value.GetComponent<Rigidbody>();  
         if (_rb == null)
         {
             Debug.LogError("JumpAction: No Rigidbody found on agentBody!");
@@ -46,7 +46,6 @@ public partial class JumpAction : Action
     {
         if (_rb == null) return Status.Running;
         
-        // Don't check grounded until jump delay has passed
         if (Time.time - _jumpTime < _jumpDelay) return Status.Running;
         
         if (_rb.linearVelocity.y <= 0 && IsGrounded())

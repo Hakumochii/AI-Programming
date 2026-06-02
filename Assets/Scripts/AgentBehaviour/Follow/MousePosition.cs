@@ -6,7 +6,7 @@ using Unity.Behavior;
 
 public class MousePosition : MonoBehaviour
 {
-    public Transform groundMarker; // Empty GameObject in scene
+    public Transform groundMarker;
 
     [HideInInspector] public BehaviorGraphAgent agent;
     [SerializeField] private LayerMask groundLayer;
@@ -27,7 +27,7 @@ public class MousePosition : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
-            groundMarker.position = hit.point; // updates every frame
+            groundMarker.position = hit.point; 
         }
     }
 }

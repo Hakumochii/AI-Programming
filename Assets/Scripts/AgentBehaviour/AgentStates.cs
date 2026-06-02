@@ -26,7 +26,7 @@ public class AgentStates : MonoBehaviour
 
     private List<GameObject> _graphs = new List<GameObject>();
 
-    public Rigidbody agentBody;  // ← drag it here in the inspector
+    public Rigidbody agentBody;  
 
     void Awake()
     {

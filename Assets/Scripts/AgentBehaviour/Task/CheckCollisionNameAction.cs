@@ -21,14 +21,14 @@ public partial class CheckCollisionNameAction : Action
         _isMatch = false;
         _collisionHappened = false;
         _collisionEvents.OnTriggerEnterEvent += OnTriggerEnter;
-        _collisionEvents.OnTriggerExitEvent += OnTriggerExit;   // ← add this
+        _collisionEvents.OnTriggerExitEvent += OnTriggerExit;   
         return Status.Running;
     }
 
     private void OnTriggerExit(GameObject other)
     {
         if (other.name == targetName.Value)
-            _isMatch = false;  // ← forget when leaving
+            _isMatch = false;  
     }
 
     private void OnTriggerEnter(GameObject other)
@@ -40,9 +40,9 @@ public partial class CheckCollisionNameAction : Action
 
     protected override Status OnUpdate()
     {
-        if (!_collisionHappened) return Status.Running;  // wait for any collision
-        if (_isMatch) return Status.Success;             // right name
-        return Status.Failure;                           // wrong name
+        if (!_collisionHappened) return Status.Running;  
+        if (_isMatch) return Status.Success;             
+        return Status.Failure;                           
     }  
 
     protected override void OnEnd()

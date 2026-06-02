@@ -29,6 +29,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool directing = false;
     private Quaternion cursorRotation = Quaternion.Euler(90f, 0f, 0f);
     private float cursorOffsetFromGround = 0.5f;
+    public float sphereRadius = 2f;
 
     //corutines
     private Coroutine callAgentsCoroutine;
@@ -39,7 +40,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Start()
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined; // keeps it inside the game window
+        Cursor.lockState = CursorLockMode.Confined; 
 
         cursorCircleSmall = Instantiate(cursorCircleSmallPrefab, Vector3.zero, cursorRotation);
         cursorCircleBig = Instantiate(cursorCircleBigPrefab, Vector3.zero, cursorRotation);
@@ -69,7 +70,6 @@ public class PlayerInteraction : MonoBehaviour
             var states = agent.GetComponent<AgentStates>();
             if (states == null) continue;
 
-            // Only restart if the agent is currently in follow mode
             if (states.task == AgentStates.Task.FollowingTask)
             {
                 var behaviorAgent = states.followGraph.GetComponent<BehaviorGraphAgent>();
@@ -81,7 +81,6 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                // Just update the blackboard value for when they eventually switch to follow
                 var behaviorAgent = states.followGraph.GetComponent<BehaviorGraphAgent>();
                 if (behaviorAgent != null)
                     behaviorAgent.BlackboardReference.SetVariableValue("IsPointing", directing);
@@ -130,13 +129,12 @@ public class PlayerInteraction : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(pointerPosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+        if (Physics.SphereCast(ray, sphereRadius, out hit, Mathf.Infinity, groundLayer))
         {
             ProjectCursor(hit);
         }
         else
         {
-            // Raycast missed — hide cursors so you can see when this happens
             cursorCircleSmall.SetActive(false);
             cursorCircleBig.SetActive(false);
             arrowCursor.SetActive(false);
@@ -191,7 +189,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (hit.collider != null && hit.collider.CompareTag("Agent"))
             {
-                Debug.Log("Agent was hit");
                 GameObject agent = hit.collider.gameObject;
                 AgentStates _state = agent.GetComponent<AgentStates>();
                 if (_state != null)

@@ -16,9 +16,7 @@ public partial class Flocking : Action
     private Vector3 _target;
     private BehaviorGraphAgent _agent;
     private NavMeshAgent _navAgent;
-    
 
-    // ─── Flocking parameters ──────────────────────────────────────────────────
     [Header("Flocking - Separation")]
     public float separationRadius = 3.0f;
     public float separationForce  = 5.0f;
@@ -38,38 +36,30 @@ public partial class Flocking : Action
     [Tooltip("Max world-unit shift the flocking offset can apply to the NavMesh destination.")]
     public float maxFlockingOffset = 2.5f;
 
-    //public event Action<GameObject> OnTriggerEnterEvent;
-
-    // ─── Shared registry ──────────────────────────────────────────────────────
     private static readonly List<BehaviorGraphAgent> _allAgents = new List<BehaviorGraphAgent>();
 
-    private Vector3  _noiseOffset;
+    private Vector3   _noiseOffset;
     private Coroutine _noiseCoroutine;
-    private float arrivalDistance = 3f;
-    private Vector2 pointerPosition;
+    private float     arrivalDistance = 4f;
 
 
     protected override Status OnStart()
     {
-        _agent = GameObject.GetComponent<BehaviorGraphAgent>();
+        _agent    = GameObject.GetComponent<BehaviorGraphAgent>();
         _navAgent = navAgent.Value;
         _noiseCoroutine = _agent.StartCoroutine(UpdateNoise());
         _allAgents.Add(_agent);
         return Status.Running;
     }
-    
 
     protected override Status OnUpdate()
     {
         _target = target.Value.position;
         GoTowardsTarget();
 
-        // Check if we arrived
         float dist = Vector3.Distance(_agent.transform.position, _target);
         if (dist < arrivalDistance)
-        {
             return Status.Success;
-        }
 
         return Status.Running;
     }
@@ -81,6 +71,8 @@ public partial class Flocking : Action
             _agent.StopCoroutine(_noiseCoroutine);
             _noiseCoroutine = null;
         }
+
+        _allAgents.Remove(_agent);
     }
 
     public void GoTowardsTarget()
@@ -88,13 +80,16 @@ public partial class Flocking : Action
         _navAgent.enabled   = true;
         _navAgent.isStopped = false;
 
-        // Only use separation while moving — no cohesion/alignment offset
-        // so the destination stays close to the player and doesn't drift
-        Vector3 sep = ComputeSeparationOnly();
-        if (sep.magnitude > maxFlockingOffset)
-            sep = sep.normalized * maxFlockingOffset;
+        Vector3 sep       = ComputeSeparation();
+        Vector3 cohesion  = ComputeCohesion();
+        Vector3 alignment = ComputeAlignment();
 
-        Vector3 destination = _target + sep + _noiseOffset;
+        // Clamp each force independently so none dominates
+        if (sep.magnitude       > maxFlockingOffset) sep       = sep.normalized       * maxFlockingOffset;
+        if (cohesion.magnitude  > maxFlockingOffset) cohesion  = cohesion.normalized  * maxFlockingOffset;
+        if (alignment.magnitude > maxFlockingOffset) alignment = alignment.normalized * maxFlockingOffset;
+
+        Vector3 destination = _target + sep + cohesion + alignment + _noiseOffset;
         destination.y = _target.y;
 
         if (NavMesh.SamplePosition(destination, out NavMeshHit hit, maxFlockingOffset + 1f, NavMesh.AllAreas))
@@ -117,7 +112,8 @@ public partial class Flocking : Action
         }
     }
 
-    private Vector3 ComputeSeparationOnly()
+    // Steer away from nearby agents
+    private Vector3 ComputeSeparation()
     {
         Vector3 sep   = Vector3.zero;
         Vector3 myPos = _agent.transform.position;
@@ -140,38 +136,53 @@ public partial class Flocking : Action
         return sep;
     }
 
-    /*
-    private void OnTriggerEnter(Collider collision)
+    // Steer toward the average position of all other agents
+    private Vector3 ComputeCohesion()
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (_allAgents.Count <= 1) return Vector3.zero;
+
+        Vector3 avgPos = Vector3.zero;
+        int     count  = 0;
+
+        foreach (BehaviorGraphAgent other in _allAgents)
         {
-            Debug.Log("moves back");
-            //change to move back
+            if (other == _agent || other == null) continue;
+            avgPos += other.transform.position;
+            count++;
         }
 
-        if (collision.gameObject.CompareTag("PlayerRange"))
-        {
-            return Status.Success;
-            Debug.Log("waits");
-            //change to wait
-        }
+        if (count == 0) return Vector3.zero;
 
-        
+        avgPos /= count;
+
+        Vector3 toCenter = (avgPos - _agent.transform.position);
+        toCenter.y = 0f;
+        return toCenter.normalized * cohesionForce;
     }
 
-    private void OnTriggerExit(Collider collision)
+    // Steer to match the average velocity of all other agents
+    private Vector3 ComputeAlignment()
     {
-        if (collision.gameObject.CompareTag("PlayerRange"))
-        {
-            _state.followingTask = AgentStates.FollowingTask.GoingTowardsPlayer;
-        }
-    }
+        if (_allAgents.Count <= 1) return Vector3.zero;
 
-    if (triggerEventChannel.Value != null)
-    {
-        // Use the event channel to notify the graph
-        // This replaces a standard C# event
-        triggerEventChannel.Value.SendEvent(other);
-    }*/
+        Vector3 avgVelocity = Vector3.zero;
+        int     count       = 0;
+
+        foreach (BehaviorGraphAgent other in _allAgents)
+        {
+            if (other == _agent || other == null) continue;
+
+            NavMeshAgent otherNav = other.GetComponent<NavMeshAgent>();
+            if (otherNav == null) continue;
+
+            avgVelocity += otherNav.velocity;
+            count++;
+        }
+
+        if (count == 0) return Vector3.zero;
+
+        avgVelocity /= count;
+        avgVelocity.y = 0f;
+        return avgVelocity.normalized * alignmentForce;
+    }
 }
-
